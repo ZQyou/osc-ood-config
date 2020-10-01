@@ -1,13 +1,12 @@
 #!/bin/bash
-#PBS -N "rfm_blast_tblast_example_job"
-#PBS -o rfm_blast_tblast_example_job.out
-#PBS -e rfm_blast_tblast_example_job.err
-#PBS -l walltime=0:10:0
-#PBS -A PZS0710
-#PBS -l nodes=1:ppn=40
-#PBS -q debug
-
-cd $PBS_O_WORKDIR
+#SBATCH --job-name="rfm_blast_tblast_example_job"
+#SBATCH --nodes=1
+#SBATCH --output=rfm_blast_tblast_example_job.out
+#SBATCH --error=rfm_blast_tblast_example_job.err
+#SBATCH --time=0:10:0
+#SBATCH -p serial
+#SBATCH --exclusive
+module load intel
 module load blast-database/2018-08
 module load blast
 
@@ -33,6 +32,6 @@ tblastn -db nt -query 100.fasta -num_threads 16 -out 100_tblastn.out
 #
 # Now, copy data (or move) back once the simulation has completed
 #
-cp 100_tblastn.out $PBS_O_WORKDIR/
+cp 100_tblastn.out $SLURM_SUBMIT_DIR/
 
 
